@@ -24,6 +24,10 @@ class Player
   def to_s
     "I'm #{@name} with a health #{@health} and a score of #{score}."
   end
+
+  def strong?
+    @health > 100
+  end
 end
 
 if __FILE__ == $0
