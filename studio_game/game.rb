@@ -2,6 +2,7 @@ require_relative 'player'
 require_relative 'die'
 require_relative 'game_turn'
 require_relative 'treasure_trove'
+require 'csv'
 
 class Game
   attr_reader :title
@@ -9,6 +10,15 @@ class Game
   def initialize(title)
     @title = title.capitalize
     @players = []
+  end
+
+  def load_players(from_file)
+    # File.readlines(from_file).each do |line|
+    #   add_player(Player.from_csv(line))
+    # end
+    CSV.foreach(from_file) do |row|
+      add_player(Player.new(row[0], row[1].to_i))
+    end
   end
 
   def add_player(player)
@@ -51,7 +61,7 @@ class Game
     wimpy_players.sort.each { |player| print_name_and_health(player) }
 
     puts "\n#{@title}'s High Scores:"
-    @players.sort.each { |player| puts "#{player.name.ljust(22, '.')} #{player.health}" }
+    @players.sort.each { |player| puts high_score_entry(player) }
 
     @players.sort.each do |player|
       puts "\n#{player.name}'s point totals:"
@@ -66,5 +76,17 @@ class Game
 
   def total_points
     @players.reduce(0) { |sum, player| sum + player.points }
+  end
+
+  def save_high_scores(to_file="high_scores.txt")
+    File.open(to_file, "w") do |file|
+      file.puts "#{@title}'s High Scores:"
+      @players.sort.each { |player| file.puts high_score_entry(player) }
+    end
+  end
+
+  def high_score_entry(player)
+    formatted_name = player.name.ljust(20, '.')
+    "#{player.name.ljust(20, '.')} #{player.score}"
   end
 end
