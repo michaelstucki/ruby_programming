@@ -3,6 +3,8 @@ require_relative 'die'
 require_relative 'game_turn'
 require_relative 'treasure_trove'
 require 'csv'
+require_relative 'clumsy_player'
+require_relative 'berserk_player'
 
 class Game
   attr_reader :title

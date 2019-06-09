@@ -6,6 +6,8 @@ player3 = Player.new("curly", 125)
 
 knuckleheads = Game.new("knuckleheads")
 knuckleheads.load_players(ARGV.shift || "players.csv")
+knuckleheads.add_player(ClumsyPlayer.new('klutz', 105))
+knuckleheads.add_player(BerserkPlayer.new('berserker', 50))
 
 loop do
 	puts "\nHow many game rounds? ('quit' to exit)"
